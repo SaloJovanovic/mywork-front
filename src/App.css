@@ -1,0 +1,38 @@
+.holder {
+  margin-left: 5rem;
+}
+
+body {
+  background-color: var(--background-color);
+}
+
+.loggedout {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
+  color: white;
+}
+
+.loginbutton {
+  color: var(--yellow);
+  margin: 10px;
+  /* width: 100%; */
+  text-decoration: none;
+}
+
+* {
+  --red: #e15555;
+  --green: #2b721d;
+  --gray: #414141;
+  --yellow: #9b7c3e;
+  --darkGray: #18181B;
+  --black: #161616;
+}
+
+@media only screen and (max-width: 600px) {
+  .holder {
+    margin: 0;
+  }
+}

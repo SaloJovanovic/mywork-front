@@ -1,0 +1,254 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  .weekNote {
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    h2 {
+      margin-bottom: 10px;
+    }
+    div {
+      display: flex;
+      flex-direction: column;
+      button {
+        font-size: 1rem;
+        background: var(--yellow);
+        border: 2px solid var(--yellow);
+        background: var(--yellow);
+        color: white;
+        height: 55px;
+        margin: 5px;
+      }
+    }
+  }
+  .blur.active {
+    z-index: 2;
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    backdrop-filter: blur(10px);
+  }
+  #eventPopUp {
+    height: auto !important;
+    padding-bottom: 15px;
+    textarea {
+      margin-top: 20px;
+      margin-bottom: 5px;
+    }
+  }
+  .popUp {
+    z-index: 3;
+    transition: 300ms ease;
+    margin-top: 100vh;
+    position: fixed;
+    width: 90%;
+    max-width: 250px;
+    height: 450px;
+    background: var(--black);
+    border: 2px solid var(--gray);
+    border-radius: 20px;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    p {
+      width: 80%;
+      text-align: justify;
+      color: white;
+    }
+    button {
+      border: none;
+      background: var(--yellow);
+      font-size: 1.5rem;
+      color: white;
+      width: 60%;
+      height: 55px;
+      margin: 5px;
+      &:last-child {
+        font-size: 1rem;
+        // background: transparent;
+        border: 2px solid var(--yellow);
+      }
+    }
+
+    button:focus {
+      background: transparent;
+      border: 2px solid var(--yellow);
+    }
+
+    
+    #nazad {
+      font-size: 1rem;
+      background: transparent;
+      border: 2px solid var(--yellow);
+    }
+
+    .time {
+      width: 60%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      p {
+        text-align: center;
+      }
+      input {
+        width: 100%;
+        height: 35px;
+        font-size: 1.4rem;
+      }
+    }
+
+    .time2 {
+      display: flex;
+      flex-direction: column;
+      width: 60%;
+      input {
+        width: 100%;
+        height: 35px;
+        font-size: 1.4rem;
+      }
+    }
+
+    .focused {
+      background: transparent;
+      border: 2px solid var(--yellow);
+    }
+    
+    #ponisti {
+      font-size: 1rem;
+      background: transparent;
+      border: 2px solid var(--yellow);
+      color: var(--red);
+    }
+  }
+  .popUp.active {
+    margin-top: 0;
+  }
+  table {
+    margin: 50px 10px 0 10px;
+    color: white;
+    tr {
+      .napomena {
+        p {
+          margin: 0;
+          // border-bottom: 10px solid var(--yellow);
+          width: 100%;
+          // height: 19px;
+        }
+        position: relative;
+        &::before {
+          content: '';
+          position: absolute;
+          bottom: 25%;
+          left: 10%;
+          border-bottom: 10px solid var(--yellow);
+          width: 80%;
+          z-index: -1;
+        }
+      }
+      th {
+        outline: 2px solid white;
+        width: 100px;
+        height: 50px;
+        p {
+          font-size: .7rem;
+          margin: 0;
+        }
+      }
+      td {
+        text-align: center;
+        outline: 2px solid white;
+        button {
+          font-size: 1.5rem;
+          color: white;
+          width: 100%;
+          height: 100%;
+          border-radius: 0;
+          height: 50px;
+          border: none;
+          background: transparent;
+          &:hover {
+            cursor: pointer;
+          }
+          .times {
+            p {
+              font-size: .8rem;
+              margin: 0;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 850px) {
+  .container {
+    table {
+      margin: 10px 10px 0 10px;
+      color: white;
+      tr {
+        .napomena {
+          p {
+            margin: 0;
+            // border-bottom: 10px solid var(--yellow);
+            width: 100%;
+            // height: 19px;
+          }
+          position: relative;
+          &::before {
+            content: '';
+            position: absolute;
+            bottom: 25%;
+            left: 10%;
+            border-bottom: 10px solid var(--yellow);
+            width: 80%;
+            z-index: -1;
+          }
+        }
+        th {
+          outline: 2px solid white;
+          width: 100px;
+          height: 50px;
+          p {
+            font-size: .7rem;
+            margin: 0;
+          }
+        }
+        td {
+          text-align: center;
+          outline: 2px solid white;
+          button {
+            font-size: 1.5rem;
+            color: white;
+            width: 100%;
+            height: 100%;
+            border-radius: 0;
+            height: 50px;
+            border: none;
+            background: transparent;
+            &:hover {
+              cursor: pointer;
+            }
+            .times {
+              p {
+                display: none;
+                font-size: .8rem;
+                margin: 0;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
