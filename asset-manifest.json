@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/mywork-front/static/css/main.ff3dd5b1.css",
+    "main.js": "/mywork-front/static/js/main.787cc26a.js",
+    "static/js/787.71df535f.chunk.js": "/mywork-front/static/js/787.71df535f.chunk.js",
+    "static/media/logo_rmbg.png": "/mywork-front/static/media/logo_rmbg.3340c84661ef9e1c68c5.png",
+    "index.html": "/mywork-front/index.html",
+    "main.ff3dd5b1.css.map": "/mywork-front/static/css/main.ff3dd5b1.css.map",
+    "main.787cc26a.js.map": "/mywork-front/static/js/main.787cc26a.js.map",
+    "787.71df535f.chunk.js.map": "/mywork-front/static/js/787.71df535f.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.ff3dd5b1.css",
+    "static/js/main.787cc26a.js"
+  ]
+}
