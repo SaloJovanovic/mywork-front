@@ -316,7 +316,8 @@ const Raspored = () => {
       fetchData();
       getAccount();
     }
-    return () => runIt();
+    // return () => runIt();
+    runIt()
   }, []);
 
   console.log("AJDEEEEE")
