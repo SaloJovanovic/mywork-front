@@ -309,7 +309,9 @@ const Raspored = () => {
   const[loader, setLoader] = useState(false);
 
   useEffect(() => {
+    console.log("DRUGO AJDE")
     const runIt = () => {
+      console.log("TRECE AJDE")
       setLoader(true);
       fetchData();
       getAccount();
