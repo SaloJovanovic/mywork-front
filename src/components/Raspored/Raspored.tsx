@@ -316,6 +316,8 @@ const Raspored = () => {
     }
     return () => runIt();
   }, []);
+
+  console.log("AJDEEEEE")
   
   return (
     <>
