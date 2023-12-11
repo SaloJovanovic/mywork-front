@@ -3,6 +3,7 @@ import styles from "./Raspored.module.scss";
 import Loader from "../Loader/Loader";
 import getCookie from "../Cookies/getCookie";
 import { useParams } from "react-router-dom";
+import link from "../BackLink";
 
 const Raspored = () => {
 
@@ -36,7 +37,7 @@ const Raspored = () => {
   }
 
   const getAccount = async () => {
-    const resp = await fetch(`https://web-production-08b6.up.railway.app/account/get-account?id=${getCookie('id')}`, {
+    const resp = await fetch(`${link}/account/get-account?id=${getCookie('id')}`, {
       method: "GET",
       headers: {
         "Content-type": "application/json; charset=UTF-8",
@@ -88,7 +89,7 @@ const Raspored = () => {
   // console.log("getDay() : " + dt.getDay() );
 
   // const getTodaysDate = async () => {
-  //   const resp = await fetch('https://web-production-08b6.up.railway.app/day/get-todays-date', {
+  //   const resp = await fetch('${link}/day/get-todays-date', {
   //     method: "GET",
   //     headers: {
   //       "Content-type": "application/json; charset=UTF-8",
@@ -149,7 +150,7 @@ const Raspored = () => {
 
     console.log("AAAAAA 2")
     try {
-      const resp = await fetch('https://web-production-08b6.up.railway.app/day/get-todays-date', {
+      const resp = await fetch(`${link}/day/get-todays-date`, {
         method: 'GET',
         headers: {
           'Content-type': 'application/json; charset=UTF-8',
@@ -231,7 +232,7 @@ const Raspored = () => {
   const getWeekFromBackend = async (inputDate: string) => {
     try {
       // Construct the URL for the getWeek endpoint with the input date as a query parameter
-      const url = `https://web-production-08b6.up.railway.app/day/get-week?inputDate=${inputDate}`;
+      const url = `${link}/day/get-week?inputDate=${inputDate}`;
 
       // Make a GET request to the backend
       const response = await fetch(url, {
@@ -257,7 +258,7 @@ const Raspored = () => {
 
   const updateShift = async (date: string, id: string, shift: string) => {
     try {
-      const response = await fetch(`https://web-production-08b6.up.railway.app/day/updateShift?date=${date}&id=${id}&newShift=${shift}`, {
+      const response = await fetch(`${link}/day/updateShift?date=${date}&id=${id}&newShift=${shift}`, {
         method: "PUT",
         headers: {
           "Content-type": "application/json; charset=UTF-8",
@@ -290,7 +291,7 @@ const Raspored = () => {
 
   const updateName = async (id: string) => {
     try {
-      const response = await fetch(`https://web-production-08b6.up.railway.app/account/change-username?id=${changeNameId}&newName=${changeName}`, {
+      const response = await fetch(`${link}/account/change-username?id=${changeNameId}&newName=${changeName}`, {
         method: "PUT",
         headers: {
           "Content-type": "application/json; charset=UTF-8",
@@ -305,15 +306,36 @@ const Raspored = () => {
       window.location.href="/raspored"
       return true;
     } catch (error) {
-      console.error("Error updating time:", error);
+      console.error("Error updating name:", error);
       return false;
+    }
+  }
+
+  const changeEmployeeStatus = async (id: string) => {
+    try {
+      const response = await fetch(`${link}/day/changeStatus?accountId=${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      console.log("Status updated!");
+      window.location.href = "/raspored";
+      return true;
+    } catch (error) {
+      console.error("Error while changing status: ", error);
     }
   }
 
 
   const updateTime = async (date: string, id: string, startTime: string, endTime: string) => {
     try {
-      const response = await fetch(`https://web-production-08b6.up.railway.app/day/updateTime?date=${date}&id=${id}&startTime=${startTime}&endTime=${endTime}`, {
+      const response = await fetch(`${link}/day/updateTime?date=${date}&id=${id}&startTime=${startTime}&endTime=${endTime}`, {
         method: "PUT",
         headers: {
           "Content-type": "application/json; charset=UTF-8",
@@ -335,7 +357,7 @@ const Raspored = () => {
 
   const updateDayNote = async (date: string, newDayNote: string) => {
     try {
-      const response = await fetch(`https://web-production-08b6.up.railway.app/day/updateDayNote?date=${date}&newDayNote=${newDayNote}`, {
+      const response = await fetch(`${link}/day/updateDayNote?date=${date}&newDayNote=${newDayNote}`, {
         method: "PUT",
         headers: {
           "Content-type": "application/json; charset=UTF-8",
@@ -358,7 +380,7 @@ const Raspored = () => {
   const updateWeekNote = async (date: string, newWeekNote: string) => {
     try {
       console.log(date + " " + newWeekNote)
-      const response = await fetch(`https://web-production-08b6.up.railway.app/day/updateWeekNote?date=${date}&newWeekNote=${newWeekNote}`, {
+      const response = await fetch(`${link}/day/updateWeekNote?date=${date}&newWeekNote=${newWeekNote}`, {
         method: "PUT",
         headers: {
           "Content-type": "application/json; charset=UTF-8",
@@ -382,7 +404,7 @@ const Raspored = () => {
     console.log("AAAAAA 3 " + date)
     try {
       console.log("pre poziva")
-      const response = await fetch("https://web-production-08b6.up.railway.app/day/create", {
+      const response = await fetch(`${link}/day/create`, {
         method: "POST",
         headers: {
           "Content-type": "application/json; charset=UTF-8",
@@ -444,6 +466,9 @@ const Raspored = () => {
   };
 
   const[loader, setLoader] = useState(false);
+
+  // const[undefinedName, setUndefinedName] = useState(false);
+  let undefinedName = false;
 
   useEffect(() => {
     console.log("DRUGO AJDE")
@@ -518,6 +543,7 @@ const Raspored = () => {
                 <div id={styles.namesPopUp} className={namesPopUp ? styles.popUp + " " + styles.active + " " + styles.namesPopUp : styles.popUp + " " + styles.namesPopUp}>
                   <textarea value={changeName} onChange={(e) => setChangeName(e.target.value)}/>
                   <button id={styles.nazad} onClick={() => namesPopUpClick("")}>Nazad</button>
+                  <button id={styles.obrisi} onClick={() => changeEmployeeStatus(changeNameId)}>Obrisi</button>
                   <button id={styles.potvrdi} onClick={() => updateName(changeNameId)}>Potvrdi</button>
                 </div>
                 :
@@ -641,6 +667,11 @@ const Raspored = () => {
               </tr>
               {daysInfo.map((day, index) => {
                 const employeeIndex = (index % day?.employeesNames.length) + 1;
+                console.log("Employee name: " + day.employeesNames[employeeIndex]);
+                if (day.employeesNames[employeeIndex] === undefined || undefinedName) {
+                  undefinedName = true;
+                  return null;
+                }
                 return (
                   <tr key={index}>
                     {

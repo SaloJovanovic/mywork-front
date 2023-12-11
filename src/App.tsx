@@ -8,13 +8,14 @@ import Login from "./components/Login/Login";
 import Account from "./components/Account/Account";
 import setCookie from "./components/Cookies/setCookie";
 import getCookie from "./components/Cookies/getCookie";
+import link from "./components/BackLink";
 
 function App() {
 
   const[access, setAccess] = useState(true);
 
   const getToken = async () => {
-    const resp = await fetch(`https://web-production-08b6.up.railway.app/account/get-token?id=${getCookie('id')}`, {
+    const resp = await fetch(`${link}/account/get-token?id=${getCookie('id')}`, {
       method: "GET",
       headers: {
         "Content-type": "application/json; charset=UTF-8",

@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import styles from "./Login.module.scss";
 import setCookie from "../Cookies/setCookie";
 import getCookie from "../Cookies/getCookie";
+import link from "../BackLink";
 
 const Login = () => {
 
@@ -11,7 +12,7 @@ const Login = () => {
   const[attemptedPassword, setAttemptedPassword] = useState("");
 
   const ulogujSe = async () => {
-    const resp = await fetch(`https://web-production-08b6.up.railway.app/account/login?username=${username}&attemptedPassword=${attemptedPassword}`, {
+    const resp = await fetch(`${link}/account/login?username=${username}&attemptedPassword=${attemptedPassword}`, {
         method: "POST",
         headers: {
           "Content-type": "application/json; charset=UTF-8",
