@@ -4,15 +4,20 @@ import Loader from "../Loader/Loader";
 import getCookie from "../Cookies/getCookie";
 import { useParams } from "react-router-dom";
 import link from "../BackLink";
+import account from "../Account/Account";
 
 const Raspored = () => {
 
-  const params = useParams();
+  const queryParameters = new URLSearchParams(window.location.search)
+  let paramDate = "";
+
+  const[rightArrowClicked, setRightArrowClicked] = useState(false);
 
   const[weekNote, setWeekNote] = useState("");
   const[popUp, setPopUp] = useState(false);
   const[eventPopUp, setEventPopUp] = useState(false);
   const[namesPopUp, setNamesPopUp] = useState(false);
+  const[accountPopUp, setAccountPopUp] = useState(false);
   const[changeNameId, setChangeNameId] = useState("");
   const[changeName, setChangeName] = useState("");
   const[dates, setDates] = useState<Date[]>([]);
@@ -146,6 +151,8 @@ const Raspored = () => {
     return false; // Second date is not after the first date
   }
 
+  let tempParamDate = "";
+
   const getTodaysDate = async (weekBefore: boolean, weekAfter: boolean) => {
 
     console.log("AAAAAA 2")
@@ -164,6 +171,10 @@ const Raspored = () => {
       const response = await resp.json();
       const date = new Date(response);
       var formattedDate = formatDateToYYYYMMDD(date);
+      var todaysFormattedDate = formatDateToYYYYMMDD(date);
+      if (paramDate === "date") {
+        formattedDate = tempParamDate;
+      }
       console.log("dan " + date.getDay())
       setDayNum(date.getDay());
 
@@ -179,7 +190,7 @@ const Raspored = () => {
 
       // return formattedDate;
       if (currentDate !== "") {
-        if (isSecondDateMoreThan8DaysAfter(formattedDate, currentDate)) {
+        if (isSecondDateMoreThan8DaysAfter(formattedDate, currentDate) || isSecondDateMoreThan8DaysAfter(todaysFormattedDate, currentDate)) {
           console.log("NE MOZE DALJE");
           weekAfter = false;
         }
@@ -289,6 +300,28 @@ const Raspored = () => {
     }
   }
 
+  const createSalary = async (date: string, id: string) => {
+    try {
+      const response = await fetch(`${link}/salary/create?date=${date}&accountId=${id}`, {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      console.log("Shift updated");
+
+      return true;
+    } catch (error) {
+      console.error("Error updating shift:", error);
+      return false;
+    }
+  }
+
   const updateName = async (id: string) => {
     try {
       const response = await fetch(`${link}/account/change-username?id=${changeNameId}&newName=${changeName}`, {
@@ -303,7 +336,7 @@ const Raspored = () => {
       }
 
       console.log("Time updated");
-      window.location.href="/raspored"
+      window.location.href = `/raspored?date=${currentDate || currentDate !== "" ? currentDate : getTodaysDate(false, false)}`;
       return true;
     } catch (error) {
       console.error("Error updating name:", error);
@@ -325,7 +358,7 @@ const Raspored = () => {
       }
 
       console.log("Status updated!");
-      window.location.href = "/raspored";
+      window.location.href = `/raspored?date=${currentDate || currentDate !== "" ? currentDate : getTodaysDate(false, false)}`;
       return true;
     } catch (error) {
       console.error("Error while changing status: ", error);
@@ -347,7 +380,7 @@ const Raspored = () => {
       }
 
       console.log("Time updated");
-      window.location.href="/raspored"
+      window.location.href = `/raspored?date=${currentDate || currentDate !== "" ? currentDate : getTodaysDate(false, false)}`;
       return true;
     } catch (error) {
       console.error("Error updating time:", error);
@@ -369,7 +402,7 @@ const Raspored = () => {
       }
 
       console.log("Day note updated");
-      window.location.href="/raspored"
+      window.location.href = `/raspored?date=${currentDate || currentDate !== "" ? currentDate : getTodaysDate(false, false)}`;
       return true;
     } catch (error) {
       console.error("Error updating day note:", error);
@@ -392,7 +425,7 @@ const Raspored = () => {
       }
 
       console.log("Week note updated");
-      window.location.href="/raspored"
+      window.location.href = `/raspored?date=${currentDate || currentDate !== "" ? currentDate : getTodaysDate(false, false)}`;
       return true;
     } catch (error) {
       console.error("Error updating week note:", error);
@@ -436,6 +469,51 @@ const Raspored = () => {
     }
   };
 
+  const[accountName, setAccountName] = useState("");
+  const[accountUsername, setAccountUsername] = useState("");
+  const[accountPassword, setAccountPassword] = useState("");
+  const[accountRole, setAccountRole] = useState("");
+  const[hourlyRate, setHourlyRate] = useState(0.0);
+  const[usernameTaken, setUsernameTaken] = useState(false);
+
+  const createAccount = async () => {
+    try {
+      console.log("pre poziva")
+      const response = await fetch(`${link}/account/create`, {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+        body: JSON.stringify({
+          name: accountName,
+          username: accountUsername,
+          password: accountPassword,
+          role: accountRole,
+          hourlyRate: hourlyRate,
+        }),
+      });
+      console.log("posle poziva")
+
+      if (!response.ok) {
+        if (response.status === 403) {
+          setUsernameTaken(true);
+        }
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      setUsernameTaken(false);
+
+      const data = await response.json();
+      console.log("Create account:", data);
+      // setDaysInfo(data)
+      window.location.href = `/raspored?date=${currentDate || currentDate !== "" ? currentDate : getTodaysDate(false, false)}`;
+      return data;
+    } catch (error) {
+      console.error("Error creating account: ", error);
+      return [];
+    }
+  };
+
 
   function formatDateToYYYYMMDD(date: Date): string {
     const year = date.getFullYear().toString();
@@ -460,7 +538,17 @@ const Raspored = () => {
 
   const fetchData = async (weekBefore: boolean, weekAfter: boolean) => {
     // const todaysDate = await getTodaysDate(weekBefore, weekAfter);
-    createDay(await getTodaysDate(weekBefore, weekAfter))
+    console.log("PARAMDATEEEEEEEEEE " + paramDate);
+    if (paramDate === null || paramDate === "") {
+      console.log("PARAMDATE JE NUll");
+      createDay(await getTodaysDate(weekBefore, weekAfter))
+    }
+    else {
+      getTodaysDate(weekBefore, weekAfter);
+      let paramDateTemp = paramDate;
+      paramDate = "date";
+      createDay(paramDateTemp);
+    }
     // createDay(todaysDate);
     // window.location.href = `/raspored?date=${todaysDate}`;
   };
@@ -474,6 +562,8 @@ const Raspored = () => {
     console.log("DRUGO AJDE")
     const runIt = () => {
       console.log("TRECE AJDE")
+      paramDate = queryParameters.get("date") ?? "";
+      tempParamDate = paramDate;
       setLoader(true);
       fetchData(false, false);
       getAccount();
@@ -491,7 +581,7 @@ const Raspored = () => {
           <Loader></Loader>
           :
           <div className={styles.container}>
-            <div className={popUp || eventPopUp || namesPopUp ? styles.blur + " " + styles.active : styles.blur}></div>
+            <div className={popUp || eventPopUp || namesPopUp || accountPopUp ? styles.blur + " " + styles.active : styles.blur}></div>
             <div className={popUp ? styles.popUp + " " + styles.active : styles.popUp}>
               <button className={shift === "I" ? styles.focused : styles.button} onClick={() => setShift("I")}>I</button>
               {/* <button onClick={() => updateShift(daysInfo[currentIndex].date, daysInfo[currentIndex].employeesIds[currentEmployeeIndex], "II")}>II</button> */}
@@ -541,10 +631,39 @@ const Raspored = () => {
             {
               role === "direktor" ?
                 <div id={styles.namesPopUp} className={namesPopUp ? styles.popUp + " " + styles.active + " " + styles.namesPopUp : styles.popUp + " " + styles.namesPopUp}>
-                  <textarea value={changeName} onChange={(e) => setChangeName(e.target.value)}/>
+                  {/*<textarea value={changeName} onChange={(e) => setChangeName(e.target.value)}/>*/}
+                  <p>{changeName}</p>
                   <button id={styles.nazad} onClick={() => namesPopUpClick("")}>Nazad</button>
                   <button id={styles.obrisi} onClick={() => changeEmployeeStatus(changeNameId)}>Obrisi</button>
                   <button id={styles.potvrdi} onClick={() => updateName(changeNameId)}>Potvrdi</button>
+                </div>
+                :
+                <></>
+            }
+            {
+              role === "direktor" ?
+                <div id={styles.accountPopUp} className={accountPopUp ? styles.popUp + " " + styles.active + " " + styles.accountPopUp : styles.popUp + " " + styles.accountPopUp}>
+                  <input value={accountName} onChange={(e) => setAccountName(e.target.value)} placeholder={"Name"}></input>
+                  <input value={accountUsername} onChange={(e) => setAccountUsername(e.target.value)} placeholder={"Username"}></input>
+                  <input value={accountPassword} onChange={(e) => setAccountPassword(e.target.value)} placeholder={"Passsword"}></input>
+                  <input value={accountRole} onChange={(e) => setAccountRole(e.target.value)} placeholder={"Role"}></input>
+                  <p id={styles.hourlyRate}>Hourly Rate (rsd):</p>
+                  <input value={hourlyRate} onChange={(e) => setHourlyRate(parseFloat(e.target.value))} placeholder={"Hourly rate"}></input>
+                  <button id={styles.nazad} onClick={() => {
+                    setAccountPopUp(false);
+                    setAccountName("");
+                    setAccountUsername("");
+                    setAccountPassword("");
+                    setAccountRole("");
+                    setHourlyRate(0.0);
+                  }}>Nazad</button>
+                  <button id={styles.potvrdi} onClick={() => createAccount()}>Potvrdi</button>
+                  {
+                    usernameTaken ?
+                      <p>Username taken.</p>
+                      :
+                      <></>
+                  }
                 </div>
                 :
                 <></>
@@ -728,6 +847,7 @@ const Raspored = () => {
                       <span></span>
                     </button>
                     <div>
+                      <button onClick={() => setAccountPopUp(true)} className={styles.addAccountBtn}>+</button>
                       <h2>Napomena</h2>
                       <textarea onChange={(e) => setWeekNote(e.target.value)}>{daysInfo[0]?.weekNote}</textarea>
                       <button onClick={() => updateWeekNote(daysInfo[0]?.date, weekNote)} id={styles.potvrdi}>Potvrdi</button>
@@ -739,13 +859,26 @@ const Raspored = () => {
                       <span></span>
                     </button>
                   </div>
-
                   :
                   <div className={styles.weekNoteSubContainer}>
+                    <button disabled={rightArrowClicked ? false : true} onClick={() => {
+                      // window.location.href = `/rasproed?date=${getOneWeekBeforeDate(currentDate)}`
+                      fetchData(true, false);
+                      setRightArrowClicked(false);
+                    }} className={styles.arrow}>
+                      <span></span>
+                    </button>
                     <div>
                       <h2>Napomena</h2>
                       <p>{daysInfo[0]?.weekNote}</p>
                     </div>
+                    <button onClick={() => {
+                      // window.location.href = `/rasproed?date=${getOneWeekAfterDate(currentDate)}`
+                      setRightArrowClicked(true);
+                      fetchData(false, true);
+                    }} className={styles.arrow2}>
+                      <span></span>
+                    </button>
                   </div>
               }
             </div>

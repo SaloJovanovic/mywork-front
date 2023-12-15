@@ -4,6 +4,7 @@ import { defaultMaxListeners } from 'events';
 import Card from '../Card/Card';
 import { BsFillCalendar2DateFill, BsFillFileEarmarkRuledFill, BsQuestionLg } from 'react-icons/bs'; 
 import { FaTasks } from 'react-icons/fa';
+import { TbReport } from "react-icons/tb";
 
 const Main = () => {
   return (
@@ -18,11 +19,9 @@ const Main = () => {
         <a href={'/nedeljni-mesecni-zadaci'}>
           <Card icon={<FaTasks/>} name="Nedeljni i mesečni zadaci" text='Pogledaj svoje nedeljne i mesečne zadatke, štikliraj ako si ih uradio!'></Card>
         </a>
-        <Card icon={<BsQuestionLg/>} name="..." text='...'></Card>
-        {/* <Card></Card>
-        <Card></Card>
-        <Card></Card>
-        <Card></Card> */}
+        <a href={'/mesecni-izvestaj'}>
+          <Card icon={<TbReport/>} name={"Mesečni izveštaj"} text={"Pogledaj mesečne izveštaje za ovaj mesec"}></Card>
+        </a>
       </div>
     </div>
   )

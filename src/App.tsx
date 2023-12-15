@@ -9,6 +9,7 @@ import Account from "./components/Account/Account";
 import setCookie from "./components/Cookies/setCookie";
 import getCookie from "./components/Cookies/getCookie";
 import link from "./components/BackLink";
+import MonthlyReport from "./components/MonthlyReport/MonthlyReport";
 
 function App() {
 
@@ -62,6 +63,11 @@ function App() {
             <Route path={'/nalog'} element={
               <div>
                 <Account/>
+              </div>
+            }></Route>
+            <Route path={'/mesecni-izvestaj'} element={
+              <div>
+                <MonthlyReport/>
               </div>
             }></Route>
             </>
