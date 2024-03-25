@@ -474,6 +474,7 @@ const Raspored = () => {
   const[accountPassword, setAccountPassword] = useState("");
   const[accountRole, setAccountRole] = useState("");
   const[hourlyRate, setHourlyRate] = useState(0.0);
+  const[fixedSalary, setFixedSalary] = useState(0.0);
   const[usernameTaken, setUsernameTaken] = useState(false);
 
   const createAccount = async () => {
@@ -490,6 +491,7 @@ const Raspored = () => {
           password: accountPassword,
           role: accountRole,
           hourlyRate: hourlyRate,
+          fixedSalary: fixedSalary
         }),
       });
       console.log("posle poziva")
@@ -649,6 +651,8 @@ const Raspored = () => {
                   <input value={accountRole} onChange={(e) => setAccountRole(e.target.value)} placeholder={"Role"}></input>
                   <p id={styles.hourlyRate}>Hourly Rate (rsd):</p>
                   <input value={hourlyRate} onChange={(e) => setHourlyRate(parseFloat(e.target.value))} placeholder={"Hourly rate"}></input>
+                  <p id={styles.hourlyRate}>Fixed Salary (rsd):</p>
+                  <input value={fixedSalary} onChange={(e) => setFixedSalary(parseFloat(e.target.value))} placeholder={"Fixed salary"}></input>
                   <button id={styles.nazad} onClick={() => {
                     setAccountPopUp(false);
                     setAccountName("");
@@ -656,6 +660,7 @@ const Raspored = () => {
                     setAccountPassword("");
                     setAccountRole("");
                     setHourlyRate(0.0);
+                    setFixedSalary(0.0);
                   }}>Nazad</button>
                   <button id={styles.potvrdi} onClick={() => createAccount()}>Potvrdi</button>
                   {

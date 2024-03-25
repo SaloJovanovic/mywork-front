@@ -12,6 +12,7 @@ const Login = () => {
   const[attemptedPassword, setAttemptedPassword] = useState("");
 
   const ulogujSe = async () => {
+    console.log("????");
     const resp = await fetch(`${link}/account/login?username=${username}&attemptedPassword=${attemptedPassword}`, {
         method: "POST",
         headers: {
