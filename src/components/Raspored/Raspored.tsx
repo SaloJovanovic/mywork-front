@@ -820,7 +820,7 @@ const Raspored = () => {
                           }}>
                             {day1.shifts[index]}
                             <div className={styles.times}>
-                              <p>{day1.startTimes[index]} - {day1.endTimes[index]}</p>
+                              <p>{day1.startTimes[index]} {day1.endTimes[index]}</p>
                             </div>
                           </button>
                         </td>
