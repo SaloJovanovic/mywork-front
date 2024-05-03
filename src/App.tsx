@@ -10,6 +10,8 @@ import setCookie from "./components/Cookies/setCookie";
 import getCookie from "./components/Cookies/getCookie";
 import link from "./components/BackLink";
 import MonthlyReport from "./components/MonthlyReport/MonthlyReport";
+import OneSignal from 'react-onesignal';
+
 
 function App() {
 
@@ -32,6 +34,9 @@ function App() {
 
   useEffect(() => {
     getToken();
+    OneSignal.init({
+      appId: "926b5dda-2e94-4380-aad6-6cb84cf88a64"
+    });
   }, []);
 
   return (

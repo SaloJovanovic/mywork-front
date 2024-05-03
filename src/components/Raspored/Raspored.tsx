@@ -5,6 +5,7 @@ import getCookie from "../Cookies/getCookie";
 import { useParams } from "react-router-dom";
 import link from "../BackLink";
 import account from "../Account/Account";
+import {start} from "repl";
 
 const Raspored = () => {
 
@@ -545,6 +546,30 @@ const Raspored = () => {
     return inputDate.toLocaleDateString(undefined, options);
   }
 
+  function isInCurrentWeek(dateString:string) {
+    // Convert the date string to a Date object
+    const parts = dateString.split('-');
+    const year = parseInt(parts[0], 10);
+    const month = parseInt(parts[1], 10) - 1; // Months are zero-based
+    const day = parseInt(parts[2], 10);
+    const date = new Date(year, month, day);
+
+    // Get the current date and time
+    const today = new Date();
+
+    // Get the start date of the current week (Sunday)
+    const startOfWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay() + 1);
+
+    // Get the end date of the current week (Saturday)
+    const endOfWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() + (6 - today.getDay() + 1));
+    console.log("pocetak nedelje " + formatDateToYYYYMMDD(startOfWeek) + "; kraj nedelje " + formatDateToYYYYMMDD(endOfWeek));
+
+    // Check if the given date is between the start and end of the current week
+    return date >= startOfWeek && date <= endOfWeek;
+  }
+
+  console.log("DA LI JE OVA NEDELJA? " + isInCurrentWeek("2024-05-05"));
+
   const fetchData = async (weekBefore: boolean, weekAfter: boolean) => {
     // const todaysDate = await getTodaysDate(weekBefore, weekAfter);
     console.log("PARAMDATEEEEEEEEEE " + paramDate);
@@ -799,54 +824,54 @@ const Raspored = () => {
                 </th>
               </tr>
               {Array.from({ length: 12 }, (_, index) => {
-  const day = daysInfo[index % daysInfo.length];
-  const employeeIndex = (index % (day?.employeesNames.length || 1)) + 1;
+                const day = daysInfo[index % daysInfo.length];
+                const employeeIndex = (index % (day?.employeesNames.length || 1)) + 1;
 
-  console.log("Employee name: " + day?.employeesNames[employeeIndex]);
+                console.log("Employee name: " + day?.employeesNames[employeeIndex]);
 
-  if (day?.employeesNames[employeeIndex] === undefined || undefinedName) {
-    undefinedName = true;
-    return null;
-  }
+                if (day?.employeesNames[employeeIndex] === undefined || undefinedName) {
+                  undefinedName = true;
+                  return null;
+                }
 
-  return (
-    <tr key={index}>
-      {
-        role === "direktor" ?
-          <td onClick={() => {
-            setChangeName(day?.employeesNames[employeeIndex]);
-            namesPopUpClick(day?.employeesIds[employeeIndex]);
-          }}>{day?.employeesNames[employeeIndex]}</td>
-          :
-          <td>{day?.employeesNames[employeeIndex]}</td>
-      }
-      {daysInfo.map((day1, index1) => {
-        return (
-          <td key={index1}>
-            <button onClick={() => {
-              if (getCookie('id') === day?.employeesIds[employeeIndex] || role === "direktor") {
-                popUpClick(employeeIndex, index1, day1.shifts[index], day1.startTimes[index], day1.endTimes[index])
-              }
-              console.log("impossible");
-            }}>
-              {
-                day1.shifts[index] === "0" ?
-                  <div> - </div>
-                  :
-                  <>
-                    {day1.shifts[index]}
-                    <div className={styles.times}>
-                      <p>{day1.startTimes[index]} {day1.endTimes[index]}</p>
-                    </div>
-                  </>
-              }
-            </button>
-          </td>
-        );
-      })}
-    </tr>
-  );
-})}
+                return (
+                  <tr key={index}>
+                    {
+                      role === "direktor" ?
+                        <td onClick={() => {
+                          setChangeName(day?.employeesNames[employeeIndex]);
+                          namesPopUpClick(day?.employeesIds[employeeIndex]);
+                        }}>{day?.employeesNames[employeeIndex]}</td>
+                        :
+                        <td>{day?.employeesNames[employeeIndex]}</td>
+                    }
+                    {daysInfo.map((day1, index1) => {
+                      return (
+                        <td key={index1}>
+                          <button onClick={() => {
+                            if ((getCookie('id') === day?.employeesIds[employeeIndex] && !isInCurrentWeek(day1?.date)) || role === "direktor") {
+                              popUpClick(employeeIndex, index1, day1.shifts[index], day1.startTimes[index], day1.endTimes[index])
+                            }
+                            console.log("impossible");
+                          }}>
+                            {
+                              day1.shifts[index] === "0" ?
+                                <div> - </div>
+                                :
+                                <>
+                                  {day1.shifts[index]}
+                                  <div className={styles.times}>
+                                    <p>{day1.startTimes[index]} {day1.endTimes[index]}</p>
+                                  </div>
+                                </>
+                            }
+                          </button>
+                        </td>
+                      );
+                    })}
+                  </tr>
+                );
+              })}
               {/* {daysInfo.map((day, index) => {
                 const employeeIndex = (index % day?.employeesNames.length) + 1;
                 console.log("Employee name: " + day.employeesNames[employeeIndex]);
