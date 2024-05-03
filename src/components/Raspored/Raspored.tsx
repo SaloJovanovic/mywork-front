@@ -37,6 +37,8 @@ const Raspored = () => {
 
   const[dayNum, setDayNum] = useState(0);
 
+  const[numberEmployees, setNumberEmployees] = useState<any[]>([]);
+
   const submitShift = () => {
     updateShift(daysInfo[currentIndex].date, daysInfo[currentIndex].employeesIds[currentEmployeeIndex], shift);
   }
@@ -459,7 +461,9 @@ const Raspored = () => {
 
       const data = await response.json();
       console.log("Create day:", data);
+      console.log("Employeeessss namess: ", data[0].employeesNames);
       setDaysInfo(data)
+      setNumberEmployees(data[0].employeesNames);
       setLoader(false);
       console.log("setovao loader na false")
       return data;
@@ -476,6 +480,9 @@ const Raspored = () => {
   const[hourlyRate, setHourlyRate] = useState(0.0);
   const[fixedSalary, setFixedSalary] = useState(0.0);
   const[usernameTaken, setUsernameTaken] = useState(false);
+
+  // console.log("VAZNO ");
+  // console.log(daysInfo[0].employeesNames);
 
   const createAccount = async () => {
     try {
@@ -575,6 +582,8 @@ const Raspored = () => {
   }, []);
 
   console.log("AJDEEEEE")
+
+  console.log(daysInfo)
 
   return (
     <>
@@ -789,7 +798,56 @@ const Raspored = () => {
                   </>
                 </th>
               </tr>
-              {daysInfo.map((day, index) => {
+              {Array.from({ length: 12 }, (_, index) => {
+  const day = daysInfo[index % daysInfo.length];
+  const employeeIndex = (index % (day?.employeesNames.length || 1)) + 1;
+
+  console.log("Employee name: " + day?.employeesNames[employeeIndex]);
+
+  if (day?.employeesNames[employeeIndex] === undefined || undefinedName) {
+    undefinedName = true;
+    return null;
+  }
+
+  return (
+    <tr key={index}>
+      {
+        role === "direktor" ?
+          <td onClick={() => {
+            setChangeName(day?.employeesNames[employeeIndex]);
+            namesPopUpClick(day?.employeesIds[employeeIndex]);
+          }}>{day?.employeesNames[employeeIndex]}</td>
+          :
+          <td>{day?.employeesNames[employeeIndex]}</td>
+      }
+      {daysInfo.map((day1, index1) => {
+        return (
+          <td key={index1}>
+            <button onClick={() => {
+              if (getCookie('id') === day?.employeesIds[employeeIndex] || role === "direktor") {
+                popUpClick(employeeIndex, index1, day1.shifts[index], day1.startTimes[index], day1.endTimes[index])
+              }
+              console.log("impossible");
+            }}>
+              {
+                day1.shifts[index] === "0" ?
+                  <div> - </div>
+                  :
+                  <>
+                    {day1.shifts[index]}
+                    <div className={styles.times}>
+                      <p>{day1.startTimes[index]} {day1.endTimes[index]}</p>
+                    </div>
+                  </>
+              }
+            </button>
+          </td>
+        );
+      })}
+    </tr>
+  );
+})}
+              {/* {daysInfo.map((day, index) => {
                 const employeeIndex = (index % day?.employeesNames.length) + 1;
                 console.log("Employee name: " + day.employeesNames[employeeIndex]);
                 if (day.employeesNames[employeeIndex] === undefined || undefinedName) {
@@ -834,7 +892,7 @@ const Raspored = () => {
                       )})}
                   </tr>
                 );
-              })}
+              })} */}
               {/* <tr>
           <td>{daysInfo[1]?.employeesNames[1]}</td>
           <td>
