@@ -46,8 +46,8 @@ const Main = () => {
         </a>
         {
           role === "direktor" ?
-          <a href={'/mesecni-izvestaj'}>
-            <Card icon={<TbReport/>} name={"Mesečni izveštaj"} text={"Pogledaj mesečne izveštaje za ovaj mesec"}></Card>
+          <a href={'/mesecni-obracun'}>
+            <Card icon={<TbReport/>} name={"Mesečni obračun"} text={"Pogledaj mesečne obračune"}></Card>
           </a>
           :
           <></>

@@ -13,6 +13,7 @@
     "firebase": "^10.4.0",
     "react": "^18.2.0",
     "react-datepicker": "^4.24.0",
+    "react-doc-viewer": "^0.1.14",
     "react-dom": "^18.2.0",
     "react-icons": "^4.10.1",
     "react-onesignal": "^3.0.1",

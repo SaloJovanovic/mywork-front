@@ -7,6 +7,7 @@ import { FaRegEdit } from "react-icons/fa";
 import link from "../BackLink";
 import {Simulate} from "react-dom/test-utils";
 import change = Simulate.change;
+import getCookie from "../Cookies/getCookie";
 
 interface Salary {
   id: String;
@@ -15,6 +16,7 @@ interface Salary {
   username: string;
   role: string;
   hourlyRate: number;
+  fixedSalary: number;
   active: number;
   salary: number;
 }
@@ -88,7 +90,7 @@ const MonthlyReport = () => {
 
   const editClicked = (accountId: string, hourlyRate: number, fixedSalary: number) => {
     setAccountId(accountId);
-    setHourlyRate(hourlyRate);
+    getAccount(accountId);
     setFixedSalary(fixedSalary);
     setPopUp(true);
   }
@@ -98,7 +100,20 @@ const MonthlyReport = () => {
   const nazadClicked = () => {
     setAccountId("");
     setHourlyRate(0.0);
+    setFixedSalary(0.0);
     setPopUp(false);
+  }
+
+  const getAccount = async (id: String) => {
+    console.log(getCookie('id'))
+    const resp = await fetch(`${link}/account/get-account?id=${id}`, {
+      method: "GET",
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      }
+    })
+      .then((response) => response.json());
+    setHourlyRate(resp.hourlyRate);
   }
 
   const changeHourlyRate = async () => {
@@ -199,19 +214,19 @@ const MonthlyReport = () => {
           <ul>
             {salaries.map((salary) => (
               <li key={salary.accountId}>
-                <button onClick={() => editClicked(salary.accountId, salary.hourlyRate, salary.salary)}><FaRegEdit></FaRegEdit></button>
+                <button onClick={() => editClicked(salary.accountId, salary.hourlyRate, salary.fixedSalary)}><FaRegEdit></FaRegEdit></button>
                 <p><span>Name:</span> {salary.name}</p>
                 <p><span>Username:</span> {salary.username}</p>
                 <p><span>Role:</span> {salary.role}</p>
                 {/*<p><span>Hourly Rate:</span> <input value={salary.hourlyRate}/> rsd</p>*/}
-                <p><span>Hourly Rate:</span> {salary.hourlyRate} rsd</p>
+                {/*<p><span>Hourly Rate:</span> {salary.hourlyRate} rsd</p>*/}
                 {
                   salary.active ?
                     <p><span>Active:</span> Yes</p>
                     :
                     <p><span>Active:</span> No</p>
                 }
-                <p><span>Salary:</span> {salary.salary} rsd</p>
+                <p><span>Salary:</span> {Math.round((salary.salary + Number.EPSILON) * 100) / 100} rsd</p>
               </li>
             ))}
           </ul>

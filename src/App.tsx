@@ -11,6 +11,7 @@ import getCookie from "./components/Cookies/getCookie";
 import link from "./components/BackLink";
 import MonthlyReport from "./components/MonthlyReport/MonthlyReport";
 import OneSignal from 'react-onesignal';
+import Regulations from "./components/Regulations/Regulations";
 
 
 function App() {
@@ -70,9 +71,14 @@ function App() {
                 <Account/>
               </div>
             }></Route>
-            <Route path={'/mesecni-izvestaj'} element={
+            <Route path={'/mesecni-obracun'} element={
               <div>
                 <MonthlyReport/>
+              </div>
+            }></Route>
+            <Route path={'/pravilnici'} element={
+              <div>
+                <Regulations/>
               </div>
             }></Route>
             </>

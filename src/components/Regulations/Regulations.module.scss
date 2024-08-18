@@ -1,0 +1,28 @@
+.container {
+  padding: 30px 50px;
+  text-align: center;
+  color: whitesmoke;
+  .naslov {
+    margin-bottom: 50px;
+    &:before {
+      background: var(--yellow);
+      width: 100px;
+      height: 7px;
+      margin-top: 32px;
+      margin-left: -2px;
+      z-index: -1;
+      display: inline-block;
+      position: absolute;
+      content: '';
+    }
+  }
+  .cards {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    a {
+      text-decoration: none;
+    }
+  }
+}
