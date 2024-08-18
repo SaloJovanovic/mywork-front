@@ -1,3 +1,11 @@
+.O {
+  background: #085a08 !important;
+}
+
+.B {
+  background: #670707 !important;
+}
+
 .holder {
   margin-left: 5rem;
 }

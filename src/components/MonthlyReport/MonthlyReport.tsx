@@ -9,6 +9,7 @@ import {Simulate} from "react-dom/test-utils";
 import change = Simulate.change;
 
 interface Salary {
+  id: String;
   accountId: string;
   name: string;
   username: string;
@@ -40,14 +41,15 @@ const MonthlyReport = () => {
         const formattedDate = getFirstDayOfMonth(selectedDate);
 
         // Create or update salaries using POST method
-        await fetch(`${link}/salary/createAll?date=${formattedDate}`, {
+        const response = await fetch(`${link}/salary/createAll?date=${formattedDate}`, {
           method: 'POST',
         });
 
         // Fetch salaries
-        const response = await fetch(`${link}/salary/get?date=${formattedDate}`);
+        // const response = await fetch(`${link}/salary/get?date=${formattedDate}`);
         const data = await response.json();
 
+        console.log(data);
         // Apply filter based on salaryFilter value
         const filteredSalaries = applySalaryFilter(data, salaryFilter);
         setSalaries(filteredSalaries);

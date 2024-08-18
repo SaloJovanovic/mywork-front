@@ -619,9 +619,17 @@ const Raspored = () => {
           <div className={styles.container}>
             <div className={popUp || eventPopUp || namesPopUp || accountPopUp ? styles.blur + " " + styles.active : styles.blur}></div>
             <div className={popUp ? styles.popUp + " " + styles.active : styles.popUp}>
-              <button className={shift === "I" ? styles.focused : styles.button} onClick={() => setShift("I")}>I</button>
+              <button className={shift === "I" ? styles.focused : styles.button} onClick={() => setShift("I")}>I
+              </button>
               {/* <button onClick={() => updateShift(daysInfo[currentIndex].date, daysInfo[currentIndex].employeesIds[currentEmployeeIndex], "II")}>II</button> */}
-              <button className={shift === "II" ? styles.focused : styles.button} onClick={() => setShift("II")}>II</button>
+              <button className={shift === "II" ? styles.focused : styles.button} onClick={() => setShift("II")}>II
+              </button>
+              <button className={shift === "M" ? styles.focused : styles.button} onClick={() => setShift("M")}>Medju
+              </button>
+              <button className={shift === "O" ? styles.focused : styles.button} onClick={() => setShift("O")}>Odmor
+              </button>
+              <button className={shift === "B" ? styles.focused : styles.button} onClick={() => setShift("B")}>Bolovanje
+              </button>
               {
                 role === "direktor" ?
                   <div className={styles.time2}>
@@ -848,7 +856,7 @@ const Raspored = () => {
                     {daysInfo.map((day1, index1) => {
                       return (
                         <td key={index1}>
-                          <button onClick={() => {
+                          <button className={day1.shifts[index]} onClick={() => {
                             if ((getCookie('id') === day?.employeesIds[employeeIndex] && !isInCurrentWeek(day1?.date)) || role === "direktor") {
                               popUpClick(employeeIndex, index1, day1.shifts[index], day1.startTimes[index], day1.endTimes[index])
                             }
@@ -859,7 +867,7 @@ const Raspored = () => {
                                 <div> - </div>
                                 :
                                 <>
-                                  {day1.shifts[index]}
+                                  <p className={styles.shiftSign}>{day1.shifts[index]}</p>
                                   <div className={styles.times}>
                                     <p>{day1.startTimes[index]} {day1.endTimes[index]}</p>
                                   </div>
