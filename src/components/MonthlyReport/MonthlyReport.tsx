@@ -43,7 +43,7 @@ const MonthlyReport = () => {
         const formattedDate = getFirstDayOfMonth(selectedDate);
 
         // Create or update salaries using POST method
-        const response = await fetch(`${link}/salary/createAll?date=${formattedDate}`, {
+        const response = await fetch(`${link}${getCookie("option") == "Garaza Pub" ? "/2" : ""}/salary/createAll?date=${formattedDate}`, {
           method: 'POST',
         });
 
@@ -106,7 +106,7 @@ const MonthlyReport = () => {
 
   const getAccount = async (id: String) => {
     console.log(getCookie('id'))
-    const resp = await fetch(`${link}/account/get-account?id=${id}`, {
+    const resp = await fetch(`${link}${getCookie("option") == "Garaza Pub" ? "/2" : ""}/account/get-account?id=${id}`, {
       method: "GET",
       headers: {
         "Content-type": "application/json; charset=UTF-8",
@@ -119,7 +119,7 @@ const MonthlyReport = () => {
   const changeHourlyRate = async () => {
     try {
       console.log("pre poziva")
-      const response = await fetch(`${link}/account/changeHourlyRate?id=${accountId}&newHourlyRate=${hourlyRate}`, {
+      const response = await fetch(`${link}${getCookie("option") == "Garaza Pub" ? "/2" : ""}/account/changeHourlyRate?id=${accountId}&newHourlyRate=${hourlyRate}`, {
         method: "PUT",
         headers: {
           "Content-type": "application/json; charset=UTF-8",
@@ -146,7 +146,7 @@ const MonthlyReport = () => {
   const changeFixedSalary = async () => {
     try {
       console.log("pre poziva")
-      const response = await fetch(`${link}/account/change-fixedSalary?id=${accountId}&newFixedSalary=${fixedSalary}`, {
+      const response = await fetch(`${link}${getCookie("option") == "Garaza Pub" ? "/2" : ""}/account/change-fixedSalary?id=${accountId}&newFixedSalary=${fixedSalary}`, {
         method: "PUT",
         headers: {
           "Content-type": "application/json; charset=UTF-8",

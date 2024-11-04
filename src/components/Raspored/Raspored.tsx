@@ -45,7 +45,7 @@ const Raspored = () => {
   }
 
   const getAccount = async () => {
-    const resp = await fetch(`${link}/account/get-account?id=${getCookie('id')}`, {
+    const resp = await fetch(`${link}${getCookie("option") == "Garaza Pub" ? "/2" : ""}/account/get-account?id=${getCookie('id')}`, {
       method: "GET",
       headers: {
         "Content-type": "application/json; charset=UTF-8",
@@ -160,7 +160,7 @@ const Raspored = () => {
 
     console.log("AAAAAA 2")
     try {
-      const resp = await fetch(`${link}/day/get-todays-date`, {
+      const resp = await fetch(`${link}${getCookie("option") == "Garaza Pub" ? "/2" : ""}/day/get-todays-date`, {
         method: 'GET',
         headers: {
           'Content-type': 'application/json; charset=UTF-8',
@@ -246,7 +246,7 @@ const Raspored = () => {
   const getWeekFromBackend = async (inputDate: string) => {
     try {
       // Construct the URL for the getWeek endpoint with the input date as a query parameter
-      const url = `${link}/day/get-week?inputDate=${inputDate}`;
+      const url = `${link}${getCookie("option") == "Garaza Pub" ? "/2" : ""}/day/get-week?inputDate=${inputDate}`;
 
       // Make a GET request to the backend
       const response = await fetch(url, {
@@ -272,7 +272,7 @@ const Raspored = () => {
 
   const updateShift = async (date: string, id: string, shift: string) => {
     try {
-      const response = await fetch(`${link}/day/updateShift?date=${date}&id=${id}&newShift=${shift}`, {
+      const response = await fetch(`${link}${getCookie("option") == "Garaza Pub" ? "/2" : ""}/day/updateShift?date=${date}&id=${id}&newShift=${shift}`, {
         method: "PUT",
         headers: {
           "Content-type": "application/json; charset=UTF-8",
@@ -305,7 +305,7 @@ const Raspored = () => {
 
   const createSalary = async (date: string, id: string) => {
     try {
-      const response = await fetch(`${link}/salary/create?date=${date}&accountId=${id}`, {
+      const response = await fetch(`${link}${getCookie("option") == "Garaza Pub" ? "/2" : ""}/salary/create?date=${date}&accountId=${id}`, {
         method: "POST",
         headers: {
           "Content-type": "application/json; charset=UTF-8",
@@ -327,7 +327,7 @@ const Raspored = () => {
 
   const updateName = async (id: string) => {
     try {
-      const response = await fetch(`${link}/account/change-username?id=${changeNameId}&newName=${changeName}`, {
+      const response = await fetch(`${link}${getCookie("option") == "Garaza Pub" ? "/2" : ""}/account/change-username?id=${changeNameId}&newName=${changeName}`, {
         method: "PUT",
         headers: {
           "Content-type": "application/json; charset=UTF-8",
@@ -349,7 +349,7 @@ const Raspored = () => {
 
   const changeEmployeeStatus = async (id: string) => {
     try {
-      const response = await fetch(`${link}/day/changeStatus?accountId=${id}`, {
+      const response = await fetch(`${link}${getCookie("option") == "Garaza Pub" ? "/2" : ""}/day/changeStatus?accountId=${id}`, {
         method: "PUT",
         headers: {
           "Content-type": "application/json; charset=UTF-8",
@@ -371,7 +371,7 @@ const Raspored = () => {
 
   const updateTime = async (date: string, id: string, startTime: string, endTime: string) => {
     try {
-      const response = await fetch(`${link}/day/updateTime?date=${date}&id=${id}&startTime=${startTime}&endTime=${endTime}`, {
+      const response = await fetch(`${link}${getCookie("option") == "Garaza Pub" ? "/2" : ""}/day/updateTime?date=${date}&id=${id}&startTime=${startTime}&endTime=${endTime}`, {
         method: "PUT",
         headers: {
           "Content-type": "application/json; charset=UTF-8",
@@ -393,7 +393,7 @@ const Raspored = () => {
 
   const updateDayNote = async (date: string, newDayNote: string) => {
     try {
-      const response = await fetch(`${link}/day/updateDayNote?date=${date}&newDayNote=${newDayNote}`, {
+      const response = await fetch(`${link}${getCookie("option") == "Garaza Pub" ? "/2" : ""}/day/updateDayNote?date=${date}&newDayNote=${newDayNote}`, {
         method: "PUT",
         headers: {
           "Content-type": "application/json; charset=UTF-8",
@@ -416,7 +416,7 @@ const Raspored = () => {
   const updateWeekNote = async (date: string, newWeekNote: string) => {
     try {
       console.log(date + " " + newWeekNote)
-      const response = await fetch(`${link}/day/updateWeekNote?date=${date}&newWeekNote=${newWeekNote}`, {
+      const response = await fetch(`${link}${getCookie("option") == "Garaza Pub" ? "/2" : ""}/day/updateWeekNote?date=${date}&newWeekNote=${newWeekNote}`, {
         method: "PUT",
         headers: {
           "Content-type": "application/json; charset=UTF-8",
@@ -440,7 +440,7 @@ const Raspored = () => {
     console.log("AAAAAA 3 " + date)
     try {
       console.log("pre poziva")
-      const response = await fetch(`${link}/day/create`, {
+      const response = await fetch(`${link}${getCookie("option") == "Garaza Pub" ? "/2" : ""}/day/create`, {
         method: "POST",
         headers: {
           "Content-type": "application/json; charset=UTF-8",
@@ -488,7 +488,7 @@ const Raspored = () => {
   const createAccount = async () => {
     try {
       console.log("pre poziva")
-      const response = await fetch(`${link}/account/create`, {
+      const response = await fetch(`${link}${getCookie("option") == "Garaza Pub" ? "/2" : ""}/account/create`, {
         method: "POST",
         headers: {
           "Content-type": "application/json; charset=UTF-8",

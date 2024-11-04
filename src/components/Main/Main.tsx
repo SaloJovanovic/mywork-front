@@ -16,9 +16,11 @@ const Main = () => {
   const[error, setError] = useState(false);
   const[success, setSuccess] = useState(false);
 
+  const[choose, setChoose] = useState("");
+
   const getAccount = async () => {
     console.log(getCookie('id'))
-    const resp = await fetch(`${link}/account/get-account?id=${getCookie('id')}`, {
+    const resp = await fetch(`${link}${getCookie("option") == "Garaza Pub" ? "/2" : ""}/account/get-account?id=${getCookie('id')}`, {
       method: "GET",
       headers: {
         "Content-type": "application/json; charset=UTF-8",
@@ -34,6 +36,12 @@ const Main = () => {
 
   return (
     <div className={styles.container}>
+      {
+        choose == "" ?
+          <></>
+          :
+          <></>
+      }
       <div className={styles.cards}>
         <a href={'/raspored'}>
           <Card icon={<BsFillCalendar2DateFill/>} name="Raspored" text='Izaberite i pogledajte smene za sledeću nedelju.'></Card>

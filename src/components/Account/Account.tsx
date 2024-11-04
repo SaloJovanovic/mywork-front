@@ -14,7 +14,7 @@ const Account = () => {
   const[success, setSuccess] = useState(false);
 
   const changePassword = async () => {
-    const resp = await fetch(`${link}/account/change-password?id=${getCookie('id')}&oldPassword=${oldPassword}&newPassword=${newPassword}`, {
+    const resp = await fetch(`${link}${getCookie("option") == "Garaza Pub" ? "/2" : ""}/account/change-password?id=${getCookie('id')}&oldPassword=${oldPassword}&newPassword=${newPassword}`, {
       method: "PUT",
       headers: {
         "Content-type": "application/json; charset=UTF-8",
@@ -34,7 +34,7 @@ const Account = () => {
   }
 
   const getAccount = async () => {
-    const resp = await fetch(`${link}/account/get-account?id=${getCookie('id')}`, {
+    const resp = await fetch(`${link}${getCookie("option") == "Garaza Pub" ? "/2" : ""}/account/get-account?id=${getCookie('id')}`, {
       method: "GET",
       headers: {
         "Content-type": "application/json; charset=UTF-8",

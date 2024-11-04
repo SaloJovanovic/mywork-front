@@ -11,9 +11,13 @@ const Login = () => {
   const[username, setUsername] = useState("");
   const[attemptedPassword, setAttemptedPassword] = useState("");
 
+  const[dodatakLinku, setDodatakLinku] = useState("");
+
+
+
   const ulogujSe = async () => {
     console.log("????");
-    const resp = await fetch(`${link}/account/login?username=${username}&attemptedPassword=${attemptedPassword}`, {
+    const resp = await fetch(`${link}${dodatakLinku}/account/login?username=${username}&attemptedPassword=${attemptedPassword}`, {
         method: "POST",
         headers: {
           "Content-type": "application/json; charset=UTF-8",
@@ -31,6 +35,13 @@ const Login = () => {
         setError(true);
       }
   }
+
+  useEffect(() => {
+    if (getCookie("option") == "Garaza Pub") {
+      setDodatakLinku("/2")
+      console.log("DODATAK LINKU")
+    }
+  }, []);
 
   return (
     <div className={styles.container}>
